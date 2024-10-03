@@ -17,6 +17,7 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 find_package(GeographicLib REQUIRED)
+find_package(Python3 COMPONENTS Development NumPy)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -108,8 +109,8 @@ find_package(GeographicLib REQUIRED)
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES slam2utm
+  INCLUDE_DIRS include
+# LIBRARIES slam2utm
   CATKIN_DEPENDS roscpp std_msgs tf2_msgs geometry_msgs sensor_msgs nav_msgs
   DEPENDS GeographicLib
 )
@@ -121,9 +122,11 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+  include
   ${catkin_INCLUDE_DIRS}
   ${GeographicLib_INCLUDE_DIRS}
+  ${Python3_INCLUDE_DIRS}
+  ${Python3_NumPy_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -156,6 +159,13 @@ target_link_libraries(${PROJECT_NAME}
   ${catkin_LIBRARIES}
   ${GeographicLib_LIBRARIES}
 )
+
+
+#add_executable(plot_trajectory src/plot_trajectory.cpp)
+#target_link_libraries(plot_trajectory 
+#  ${catkin_LIBRARIES}
+#  ${Python3_LIBRARIES}
+#)
 
 #############
 ## Install ##
@@ -198,6 +208,10 @@ target_link_libraries(${PROJECT_NAME}
 #   # myfile2
 #   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 # )
+
+#install(TARGETS ${PROJECT_NAME} plot_trajectory
+#  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+#)
 
 #############
 ## Testing ##
